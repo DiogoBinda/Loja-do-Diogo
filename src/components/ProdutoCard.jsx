@@ -1,42 +1,37 @@
-import Botao from "./Botao";
+import { Link } from 'react-router-dom';
+import Botao from "../components/Botao"; // Ajuste o caminho se necessário
 
-// Recebendo as variáveis diretamente, conforme retornadas pela API (em inglês)
-function ProdutoCard({ title, price, thumbnail, category }) {
+function ProdutoCard({ id, title, price, thumbnail, category }) {
   return (
     <div className="card">
+      {/* O componente Link envolve o conteúdo ou parte dele para permitir a navegação */}
+      <Link to={`/produto/${id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+        
+        <img
+          src={thumbnail}
+          alt={title}
+          style={{
+            width: "100%",
+            height: "180px",
+            objectFit: "cover",
+            borderRadius: "8px"
+          }}
+        />
 
-      <img
-        src={thumbnail}
-        alt={title}
-        style={{
-          width: "100%",
-          height: "180px",
-          objectFit: "cover",
-          borderRadius: "8px"
-        }}
-      />
+        <h3>{title}</h3>
 
-      <h3>{title}</h3>
-
-      <p>
-        {price.toLocaleString(
-          "pt-BR",
-          {
+        <p>
+          {price.toLocaleString("pt-BR", {
             style: "currency",
             currency: "BRL"
-          }
-        )}
-      </p>
-
-      {/* Exibição condicional caso a categoria seja passada */}
-      {category && (
-        <p>
-          Categoria: {category}
+          })}
         </p>
-      )}
 
+        <p>Categoria: {category}</p>
+      </Link>
+
+      {/* O Botão pode ficar fora do Link ou ser um link também */}
       <Botao texto="Comprar" />
-
     </div>
   );
 }
