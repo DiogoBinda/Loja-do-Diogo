@@ -1,46 +1,43 @@
-import ProdutoCard from "./ProdutoCard"
+import { useState, useEffect } from 'react';
+import ProdutoCard from "./ProdutoCard";
 
 function Vitrine() {
+  const [produtos, setProdutos] = useState([]);
+  const [carregando, setCarregando] = useState(true);
+  const [erro, setErro] = useState(null);
 
-  const produtos = [
-    {
-      id: 1,
-      nome: "Notebook",
-      preco: 3499.90,
-      freteGratis: true
-    },
-    {
-      id: 2,
-      nome: "Mouse Gamer",
-      preco: 149.90,
-      freteGratis: false
-    },
-    {
-      id: 3,
-      nome: "Teclado Mecânico",
-      preco: 299.90,
-      freteGratis: true
-    },
-    {
-      id: 4,
-      nome: "Monitor",
-      preco: 899.90,
-      freteGratis: false
-    }
-  ]
+  useEffect(() => {
+    fetch('https://dummyjson.com/products?limit=12')
+      .then(res => {
+        if (!res.ok) throw new Error("Erro na API");
+        return res.json();
+      })
+      .then(data => {
+        setProdutos(data.products);
+        setCarregando(false);
+      })
+      .catch(() => {
+        setErro("Erro ao carregar produtos");
+        setCarregando(false);
+      });
+  }, []);
+
+  if (carregando) return <p>Carregando...</p>;
+  if (erro) return <p>{erro}</p>;
 
   return (
-    <div className="vitrine">
-
-      {produtos.map(produto => (
-        <ProdutoCard
-          key={produto.id}
-          produto={produto}
+    <div className="vitrine-grid">
+      {produtos.map(p => (
+        <ProdutoCard 
+          key={p.id} 
+          title={p.title} 
+          price={p.price} 
+          thumbnail={p.thumbnail} 
+          category={p.category} 
         />
       ))}
-
     </div>
-  )
+  );
 }
 
-export default Vitrine
+export default Vitrine;

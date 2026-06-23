@@ -1,14 +1,25 @@
-import Botao from "./Botao"
-import Selo from "./Selo"
+import Botao from "./Botao";
 
-function ProdutoCard({ produto }) {
+// Recebendo as variáveis diretamente, conforme retornadas pela API (em inglês)
+function ProdutoCard({ title, price, thumbnail, category }) {
   return (
     <div className="card">
 
-      <h3>{produto.nome}</h3>
+      <img
+        src={thumbnail}
+        alt={title}
+        style={{
+          width: "100%",
+          height: "180px",
+          objectFit: "cover",
+          borderRadius: "8px"
+        }}
+      />
+
+      <h3>{title}</h3>
 
       <p>
-        {produto.preco.toLocaleString(
+        {price.toLocaleString(
           "pt-BR",
           {
             style: "currency",
@@ -17,19 +28,17 @@ function ProdutoCard({ produto }) {
         )}
       </p>
 
-      {produto.freteGratis && (
-        <Selo
-          texto="Frete Grátis"
-          cor="green"
-        />
+      {/* Exibição condicional caso a categoria seja passada */}
+      {category && (
+        <p>
+          Categoria: {category}
+        </p>
       )}
-
-      <br />
 
       <Botao texto="Comprar" />
 
     </div>
-  )
+  );
 }
 
-export default ProdutoCard
+export default ProdutoCard;
